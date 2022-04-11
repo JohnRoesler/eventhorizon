@@ -1,4 +1,4 @@
-module github.com/looplab/eventhorizon
+module github.com/johnroesler/eventhorizon
 
 go 1.17
 
@@ -11,6 +11,7 @@ require (
 	github.com/jinzhu/copier v0.3.4
 	github.com/jpillora/backoff v1.0.0
 	github.com/kr/pretty v0.3.0
+	github.com/looplab/eventhorizon v0.15.5
 	github.com/nats-io/nats.go v1.13.0
 	github.com/opentracing/opentracing-go v1.2.0
 	github.com/segmentio/kafka-go v0.4.25
@@ -21,7 +22,6 @@ require (
 
 require (
 	cloud.google.com/go v0.97.0 // indirect
-	github.com/HdrHistogram/hdrhistogram-go v1.1.2 // indirect
 	github.com/census-instrumentation/opencensus-proto v0.2.1 // indirect
 	github.com/cespare/xxhash v1.1.0 // indirect
 	github.com/cespare/xxhash/v2 v2.1.2 // indirect
@@ -38,14 +38,12 @@ require (
 	github.com/googleapis/gax-go/v2 v2.1.1 // indirect
 	github.com/klauspost/compress v1.13.6 // indirect
 	github.com/kr/text v0.2.0 // indirect
-	github.com/nats-io/jwt/v2 v2.2.0 // indirect
-	github.com/nats-io/nats-server/v2 v2.6.2 // indirect
+	github.com/minio/highwayhash v1.0.1 // indirect
 	github.com/nats-io/nkeys v0.3.0 // indirect
 	github.com/nats-io/nuid v1.0.1 // indirect
 	github.com/pierrec/lz4 v2.6.0+incompatible // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/rogpeppe/go-internal v1.6.1 // indirect
-	github.com/stretchr/testify v1.7.0 // indirect
 	github.com/uber/jaeger-lib v2.4.1+incompatible // indirect
 	github.com/xdg-go/pbkdf2 v1.0.0 // indirect
 	github.com/xdg-go/scram v1.0.2 // indirect
