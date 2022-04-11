@@ -8,7 +8,6 @@ import (
 	"sync"
 	"time"
 
-	bsonCodec "github.com/looplab/eventhorizon/codec/bson"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -17,6 +16,8 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/readconcern"
 	"go.mongodb.org/mongo-driver/mongo/readpref"
 	"go.mongodb.org/mongo-driver/mongo/writeconcern"
+
+	bsonCodec "github.com/looplab/eventhorizon/codec/bson"
 
 	eh "github.com/looplab/eventhorizon"
 )
@@ -81,17 +82,20 @@ func NewOutboxWithClient(client *mongo.Client, dbName string, options ...Option)
 	return newOutboxWithClient(client, externalClient, dbName, options...)
 }
 
-func newOutboxWithClient(client *mongo.Client, clientOwnership clientOwnership, dbName string, options ...Option) (*Outbox, error) {
+func newOutboxWithClient(client *mongo.Client, clientOwnership clientOwnership, dbName string, opts ...Option) (*Outbox, error) {
 	if client == nil {
 		return nil, fmt.Errorf("missing DB client")
 	}
 
 	ctx, cancel := context.WithCancel(context.Background())
 
+	collectionOpts := options.Collection()
+	collectionOpts.SetReadConcern(readconcern.Majority())
+
 	o := &Outbox{
 		client:          client,
 		clientOwnership: clientOwnership,
-		outbox:          client.Database(dbName).Collection("outbox"),
+		outbox:          client.Database(dbName).Collection("outbox", collectionOpts),
 		handlersByType:  map[eh.EventHandlerType]*matcherHandler{},
 		errCh:           make(chan error, 100),
 		cctx:            ctx,
@@ -99,7 +103,7 @@ func newOutboxWithClient(client *mongo.Client, clientOwnership clientOwnership, 
 		codec:           &bsonCodec.EventCodec{},
 	}
 
-	for _, option := range options {
+	for _, option := range opts {
 		if err := option(o); err != nil {
 			return nil, fmt.Errorf("error while applying option: %w", err)
 		}
